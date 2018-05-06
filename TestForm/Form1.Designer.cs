@@ -33,8 +33,8 @@
             // 
             // timelineSchedulerControl1
             // 
-            this.timelineSchedulerControl1.BarHeight = 20;
-            this.timelineSchedulerControl1.BarSpacing = 32;
+            this.timelineSchedulerControl1.BarHeight = 15;
+            this.timelineSchedulerControl1.BarSpacing = 10;
             this.timelineSchedulerControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.timelineSchedulerControl1.HeaderOneHeight = 32;
             this.timelineSchedulerControl1.HeaderTwoHeight = 20;
@@ -42,6 +42,7 @@
             this.timelineSchedulerControl1.MajorWidth = 140;
             this.timelineSchedulerControl1.MinorWidth = 20;
             this.timelineSchedulerControl1.Name = "timelineSchedulerControl1";
+            this.timelineSchedulerControl1.Scheduler = null;
             this.timelineSchedulerControl1.ShowBarLabels = true;
             this.timelineSchedulerControl1.ShowSlack = true;
             this.timelineSchedulerControl1.Size = new System.Drawing.Size(800, 450);

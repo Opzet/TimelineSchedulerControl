@@ -34,5 +34,6 @@ namespace TimelineSchedulerControl.Chart.Formats
         /// Get or set the brush for slack bars
         /// </summary>
         public Brush SlackFill { get; set; }
+
     }
 }

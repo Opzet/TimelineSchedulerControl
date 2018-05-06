@@ -16,6 +16,7 @@ namespace TimelineSchedulerControl.Chart.Formats
         public Brush Color { get; set; }
         //public ChartTextAlign TextAlign { get; set; }
         public float Margin { get; set; }
+        public StringAlignment Aligment { get; set; }
 
     }
 }

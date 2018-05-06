@@ -17,7 +17,7 @@ namespace TimelineSchedulerControl.Chart
         public List<EventBar> EventBars { get; set; } = new List<EventBar>();
 
         public float Scale { get; set; } = 20;
-        public float Height { get; private set; } = 600;
+        public float Height { get; private set; }
         public float Width { get; private set; }
 
         private DateTime startDate;
@@ -32,10 +32,14 @@ namespace TimelineSchedulerControl.Chart
         }
         public void GenerateChart(DateTime startDate, DateTime endDate)
         {
-            this.startDate = startDate;
-            this.endDate = endDate;
+            this.startDate = new DateTime(startDate.Year, startDate.Month, 1);
+            this.endDate = new DateTime(endDate.Year, endDate.Month, DateTime.DaysInMonth(endDate.Year, endDate.Month));
             chartSpan = endDate - startDate;
             Width = GetPixelSpan(chartSpan);
+            Height = control.Height;
+            MajorHeader.HeaderItems.Clear();
+            MinorHeader.HeaderItems.Clear();
+            EventBars.Clear();
 
             GenerateMajorHeader();
             GenerateRowHeader();
@@ -44,8 +48,8 @@ namespace TimelineSchedulerControl.Chart
 
         private void GenerateMajorHeader()
         {
-            DateTime currMonth;
-            int daysInMonth;
+            DateTime currentDate = new DateTime(startDate.Year, startDate.Month, 1);
+            RectangleF headerRect, columnRect;
             int numMonth = ((endDate.Year - startDate.Year) * 12) + endDate.Month - startDate.Month;
             PointF headerLoc = new PointF(0, 0);
             SizeF headerSize = new SizeF(0, control.HeaderOneHeight);
@@ -53,28 +57,31 @@ namespace TimelineSchedulerControl.Chart
             SizeF columnSize = new SizeF(0, Height - control.HeaderOneHeight);
             for (int i = 0; i <= numMonth; i++)
             {
-                currMonth = startDate.AddMonths(i);
-                MajorHeader.Dates.Add(currMonth);
-                daysInMonth = DateTime.DaysInMonth(currMonth.Year, currMonth.Month);
+                currentDate = currentDate.AddMonths(i);
+                var daysInMonth = DateTime.DaysInMonth(currentDate.Year, currentDate.Month);
+
                 headerSize.Width = GetPixelSpan(TimeSpan.FromDays(daysInMonth));
                 columnSize.Width = headerSize.Width;
-                MajorHeader.Rectangles.Add(new RectangleF(headerLoc, headerSize));
-                MajorHeader.Columns.Add(new RectangleF(columnLoc, columnSize));
-                GenerateMinorHeader(daysInMonth, new PointF(headerLoc.X, headerLoc.Y + headerSize.Height));
-                headerLoc.X = MajorHeader.Rectangles[i].Right;
-                columnLoc.X = headerLoc.X;
+                headerRect = new RectangleF(headerLoc, headerSize);
+                columnRect = new RectangleF(columnLoc, columnSize);
+                MajorHeader.HeaderItems.Add(headerRect, currentDate);
+                MajorHeader.Columns.Add(columnRect);
 
+                GenerateMinorHeader(currentDate, new PointF(headerLoc.X, headerLoc.Y + headerSize.Height));
+                headerLoc.X = headerRect.Right;
+                columnLoc.X = headerLoc.X;
             }
         }
-        private void GenerateMinorHeader(int daysNumb, PointF startLoc)
+        private void GenerateMinorHeader(DateTime date, PointF startLoc)
         {
             SizeF headerSize = new SizeF(GetPixelSpan(TimeSpan.FromDays(1)), control.HeaderTwoHeight);
             PointF columnLoc = new PointF(startLoc.X, control.HeaderOneHeight + control.HeaderTwoHeight);
             SizeF columnSize = new SizeF(GetPixelSpan(TimeSpan.FromDays(1)), Height - control.HeaderOneHeight - control.HeaderTwoHeight);
-            for (int i = 0; i < daysNumb; i++)
+            var daysInMonth = DateTime.DaysInMonth(date.Year, date.Month);
+            for (int i = 0; i < daysInMonth; i++)
             {
                 var rect = new RectangleF(startLoc, headerSize);
-                MinorHeader.Rectangles.Add(rect);
+                MinorHeader.HeaderItems.Add(rect, date.AddDays(i));
                 startLoc.X = rect.Right;
                 MinorHeader.Columns.Add(new RectangleF(columnLoc, columnSize));
                 columnLoc.X = rect.Right;
@@ -86,7 +93,16 @@ namespace TimelineSchedulerControl.Chart
         }
         private void GenerateEventBars()
         {
-
+            float headerBotom = control.HeaderOneHeight + control.HeaderTwoHeight;
+            PointF barLocation = new PointF(0, 0);
+            SizeF barSize = new SizeF(0, control.BarHeight);
+            foreach (var eventBar in control.Scheduler.Events)
+            {
+                barLocation.X = GetPixelSpan(eventBar.StartDate - startDate);
+                barLocation.Y = (eventBar.Row * (control.BarHeight + control.BarSpacing)) + headerBotom + control.BarSpacing;
+                barSize.Width = GetPixelSpan(eventBar.EndDate - eventBar.StartDate);
+                eventBar.EventRectangle = new RectangleF(barLocation, barSize);
+            }
         }
 
         private TimeSpan GetTimeSpan(float width)

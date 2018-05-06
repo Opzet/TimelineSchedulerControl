@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace TimelineSchedulerControl.Chart.Headers
 {
-    [TypeConverter(typeof(ExpandableObjectConverter))]
     public class ColumnHeader
     {
-        public List<RectangleF> Rectangles { get; set; } = new List<RectangleF>();
-        public List<DateTime> Dates { get; set; } = new List<DateTime>();
+        public Dictionary<RectangleF, DateTime> HeaderItems { get; set; } = new Dictionary<RectangleF, DateTime>();
+        //public List<RectangleF> Rectangles { get; set; } = new List<RectangleF>();
+        //public List<DateTime> Dates { get; set; } = new List<DateTime>();
         public List<RectangleF> Columns { get; set; } = new List<RectangleF>();
     }
 }

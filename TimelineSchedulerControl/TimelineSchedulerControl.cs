@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TimelineSchedulerControl.Chart.Formats;
 using TimelineSchedulerControl.Painter;
+using TimelineSchedulerControl.Scheduler;
 
 namespace TimelineSchedulerControl
 {
@@ -36,10 +37,10 @@ namespace TimelineSchedulerControl
             Font = new Font("Arial", 8, FontStyle.Bold),
             Color = Brushes.Black,
             Margin = 3,
-            //TextAlign = ChartTextAlign.MiddleCenter
+            Aligment = StringAlignment.Center
         };
         [Category("Bars")]
-        public int BarSpacing { get; set; } = 32;
+        public int BarSpacing { get; set; } = 10;
         [Category("Bars")]
         public int BarHeight { get; set; } = 20;
         [Category("Bars")]
@@ -51,9 +52,12 @@ namespace TimelineSchedulerControl
         public int MinorWidth { get; set; } = 20;
         public int MajorWidth { get; set; } = 140;
         #endregion
+        public TimelineScheduler Scheduler { get; set; }
 
         private TimelineChart chart;
         private ChartPainter painter;
+
+
         public TimelineSchedulerControl()
         {
             InitializeComponent();
@@ -61,17 +65,25 @@ namespace TimelineSchedulerControl
             painter = new ChartPainter(this);
         }
 
-        public void Init(DateTime startDate, DateTime endDate)
+        public void Init(TimelineScheduler scheduler)
         {
-
-            chart.GenerateChart(startDate, endDate);
+            Scheduler = scheduler;
+            chart.GenerateChart(scheduler.StartDate, scheduler.EndDate);
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
             if (!this.DesignMode)
+            {
+                chart.GenerateChart(Scheduler.StartDate, Scheduler.EndDate);
                 painter.PaintChart(e.Graphics, chart);
+            }
+                
+        }
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
         }
     }
 }

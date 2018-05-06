@@ -23,13 +23,19 @@ namespace TimelineSchedulerControl.Painter
         {
             PaintMajorHeader(gfx, chart);
             PaintMinorHeader(gfx, chart);
+            PaintEventBars(gfx, chart);
         }
+
+
 
         private void PaintMinorHeader(Graphics gfx, TimelineChart chart)
         {
-            foreach (var rectangle in chart.MinorHeader.Rectangles)
+            var stringFormat = new StringFormat() { Alignment = control.LabelsFormat.Aligment };
+            stringFormat.LineAlignment = StringAlignment.Center;
+            foreach (var rectangle in chart.MinorHeader.HeaderItems)
             {
-                PaintHeaderRectangle(gfx, rectangle);
+                PaintHeaderRectangle(gfx, rectangle.Key);
+                gfx.DrawString(rectangle.Value.Day.ToString(), control.Font, control.LabelsFormat.Color, rectangle.Key, stringFormat);
             }
             foreach (var rectangle in chart.MinorHeader.Columns)
             {
@@ -39,9 +45,12 @@ namespace TimelineSchedulerControl.Painter
 
         private void PaintMajorHeader(Graphics gfx, TimelineChart chart)
         {
-            foreach (var rectangle in chart.MajorHeader.Rectangles)
+            var stringFormat = new StringFormat() { Alignment = control.LabelsFormat.Aligment };
+            stringFormat.LineAlignment = StringAlignment.Center;
+            foreach (var rectangle in chart.MajorHeader.HeaderItems)
             {
-                PaintHeaderRectangle(gfx, rectangle);
+                PaintHeaderRectangle(gfx, rectangle.Key);
+                gfx.DrawString(rectangle.Value.ToString("MMMM"), control.Font, control.LabelsFormat.Color, rectangle.Key, stringFormat);
             }
             foreach (var rectangle in chart.MajorHeader.Columns)
             {
@@ -54,7 +63,17 @@ namespace TimelineSchedulerControl.Painter
             var brush = new LinearGradientBrush(rectangle, control.HeaderFormat.GradientLight, control.HeaderFormat.GradientDark, LinearGradientMode.Vertical);
             gfx.FillRectangle(brush, rectangle);
             gfx.DrawRectangle(control.HeaderFormat.Border, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
+        }
+
+        private void PaintEventBars(Graphics gfx, TimelineChart chart)
+        {
+            foreach(var eventBar in control.Scheduler.Events)
+            {
+                gfx.FillRectangle(eventBar.Format.ForeFill, eventBar.EventRectangle);
+                gfx.DrawRectangle(eventBar.Format.Border, eventBar.EventRectangle.X, eventBar.EventRectangle.Y, eventBar.EventRectangle.Width, eventBar.EventRectangle.Height);
+            }
 
         }
+
     }
 }

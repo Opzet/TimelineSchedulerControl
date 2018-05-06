@@ -51,6 +51,7 @@
     <Compile Include="Chart\Headers\RowHeader.cs" />
     <Compile Include="Painter\ChartPainter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scheduler\TimelineScheduler.cs" />
     <Compile Include="TimelineSchedulerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -59,7 +60,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Scheduler\" />
     <Folder Include="Viewport\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
