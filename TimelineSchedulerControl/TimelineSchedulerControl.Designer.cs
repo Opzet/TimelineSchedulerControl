@@ -28,8 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // TimelineSchedulerControl
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Name = "TimelineSchedulerControl";
+            this.Size = new System.Drawing.Size(539, 204);
+            this.ResumeLayout(false);
+
         }
 
         #endregion

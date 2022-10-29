@@ -10,12 +10,12 @@ namespace TimelineSchedulerControl.Scheduler
     public class TimelineScheduler
     {
         public List<EventBar> Events { get; set; } = new List<EventBar>();
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime StartDate { get; set; } = DateTime.Now;
+        public DateTime EndDate { get; set; } = DateTime.Now.AddHours(1);
 
         public TimelineScheduler()
         {
-
+          
         }
         public TimelineScheduler(DateTime startDate, DateTime endDate)
         {

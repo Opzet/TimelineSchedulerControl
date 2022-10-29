@@ -17,10 +17,14 @@ namespace TestForm
         public Form1()
         {
             InitializeComponent();
-            TimelineScheduler schedule = new TimelineScheduler(DateTime.Now, DateTime.Now.AddDays(35));
-            schedule.Events.Add(new EventBar() { StartDate = new DateTime(2018,5,8), EndDate = new DateTime(2018, 5, 12), Row = 0, Text = "Hello" });
-            schedule.Events.Add(new EventBar() { StartDate = new DateTime(2018, 5, 10), EndDate = new DateTime(2018, 5, 11), Row = 1, Text = "Hello" });
-            schedule.Events.Add(new EventBar() { StartDate = new DateTime(2018, 5, 15), EndDate = new DateTime(2018, 6, 11), Row = 2, Text = "Hello" });
+
+            DateTime today = DateTime.Now;
+
+
+            TimelineScheduler schedule = new TimelineScheduler(DateTime.Now, DateTime.Now.AddDays(1));
+            schedule.Events.Add(new EventBar() { StartDate = today.AddHours (1), EndDate = today.AddHours(5), Row = 0, Text = "Task 1" });
+            schedule.Events.Add(new EventBar() { StartDate = today.AddHours(6), EndDate = today.AddHours(8), Row = 1, Text = "Task 2" });
+            schedule.Events.Add(new EventBar() { StartDate = today.AddHours(9), EndDate = today.AddHours(11), Row = 2, Text = "Task 3" });
 
             timelineSchedulerControl1.Init(schedule);
         }

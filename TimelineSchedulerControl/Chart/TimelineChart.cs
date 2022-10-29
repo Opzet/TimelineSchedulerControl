@@ -30,6 +30,7 @@ namespace TimelineSchedulerControl.Chart
         {
             this.control = control;
         }
+
         public void GenerateChart(DateTime startDate, DateTime endDate)
         {
             this.startDate = new DateTime(startDate.Year, startDate.Month, 1);

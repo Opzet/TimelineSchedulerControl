@@ -11,6 +11,8 @@ using System.Windows.Forms;
 using TimelineSchedulerControl.Chart.Formats;
 using TimelineSchedulerControl.Painter;
 using TimelineSchedulerControl.Scheduler;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
+using TimelineSchedulerControl.Chart.EventBars;
 
 namespace TimelineSchedulerControl
 {
@@ -61,10 +63,28 @@ namespace TimelineSchedulerControl
         public TimelineSchedulerControl()
         {
             InitializeComponent();
+
             chart = new TimelineChart(this);
             painter = new ChartPainter(this);
-        }
 
+            if (this.DesignMode)
+            {
+                // Design time preview, missing object? 
+                // Comment OnPaint, if (!this.DesignMode)
+                /*
+                DateTime today = DateTime.Now;
+
+                Scheduler = new TimelineScheduler(DateTime.Now, DateTime.Now.AddDays(1));
+
+                Scheduler.Events.Add(new EventBar() { StartDate = today.AddHours(1), EndDate = today.AddHours(5), Row = 0, Text = "Task 1" });
+                Scheduler.Events.Add(new EventBar() { StartDate = today.AddHours(6), EndDate = today.AddHours(8), Row = 1, Text = "Task 2" });
+                Scheduler.Events.Add(new EventBar() { StartDate = today.AddHours(9), EndDate = today.AddHours(11), Row = 2, Text = "Task 3" });
+
+                chart.GenerateChart(Scheduler.StartDate, Scheduler.EndDate);
+                */
+
+            }
+        }
         public void Init(TimelineScheduler scheduler)
         {
             Scheduler = scheduler;
@@ -79,7 +99,7 @@ namespace TimelineSchedulerControl
                 chart.GenerateChart(Scheduler.StartDate, Scheduler.EndDate);
                 painter.PaintChart(e.Graphics, chart);
             }
-                
+
         }
         protected override void OnResize(EventArgs e)
         {

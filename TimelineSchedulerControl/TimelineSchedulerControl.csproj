@@ -62,5 +62,10 @@
   <ItemGroup>
     <Folder Include="Viewport\" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TimelineSchedulerControl.resx">
+      <DependentUpon>TimelineSchedulerControl.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
